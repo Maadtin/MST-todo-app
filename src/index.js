@@ -6,12 +6,19 @@ import * as serviceWorker from './serviceWorker';
 
 import {Provider} from "mobx-react";
 import stores from "./stores";
+import {onSnapshot} from "mobx-state-tree";
+
+stores.todoStore.fetchTodos();
 
 ReactDOM.render(
     <Provider {...stores}>
         <App />
     </Provider>
     , document.getElementById('root'));
+
+onSnapshot(stores.todoStore, snapshot => {
+    console.log(snapshot);
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
