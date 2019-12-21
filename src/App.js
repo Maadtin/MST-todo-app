@@ -1,8 +1,8 @@
 import React from 'react';
 import TodoList from "./components/TodoList";
 import TodoForm from "./components/TodoForm";
-import TodosCounter from "./components/TodosCounter";
 import Container from "react-bootstrap/Container";
+import TodoFilters from "./components/TodoFilters";
 
 function App() {
 
@@ -11,7 +11,7 @@ function App() {
     return (
         <Container className="App my-5">
             <TodoForm/>
-            <TodosCounter/>
+            <TodoFilters/>
             <TodoList />
         </Container>
     );

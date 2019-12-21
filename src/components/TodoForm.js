@@ -17,7 +17,7 @@ function TodoForm(props) {
             setName('');
         }}>
             <Form.Group>
-                <Form.Control placeholder="Todo name" type="text" value={name} onChange={e => setName(e.target.value)}/>
+                <Form.Control className="mr-2" placeholder="Todo name" type="text" value={name} onChange={e => setName(e.target.value)}/>
                 <Button disabled={!name} size={"lg"} className={"fas fa-plus"} type="submit" variant={"primary"} />
             </Form.Group>
         </Form>

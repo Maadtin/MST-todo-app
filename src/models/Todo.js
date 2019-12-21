@@ -29,14 +29,35 @@ const Todo = types
 
 const TodoStore = types
     .model('TodoStore', {
+        selectedFilter: 'all',
         todos: types.array(Todo)
     })
     .views(self => ({
+        get todosCount() {
+            return self.todos.length;
+        },
         get completedTodos() {
             return self.todos.filter(todo => todo.completed).length;
+        },
+        get incompletedTodos() {
+            return self.todos.filter(todo => !todo.completed).length;
+        },
+        filteredTodos() {
+            switch (self.selectedFilter) {
+                case 'completed':
+                    return self.todos.filter(todo => todo.completed);
+                case 'incompleted':
+                    return self.todos.filter(todo => !todo.completed);
+                default:
+                    return self.todos;
+            }
         }
+        ,
     }))
     .actions(self => ({
+        setFilter(filter) {
+            self.selectedFilter = filter;
+        },
         add: flow(function* (todo) {
             const response = yield http.post('/todos', todo);
             self.todos.unshift(response.data);

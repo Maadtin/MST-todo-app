@@ -11,6 +11,7 @@ function TodoList(props) {
 
     console.log('TodoList rendered');
     const {todoStore} = useStores();
+    const {selectedFilter, todos} = todoStore;
 
     function onKeyUp(e, todo) {
         if (e.key === 'Enter') {
@@ -19,9 +20,22 @@ function TodoList(props) {
         }
     }
 
+    function getFilteredTodos() {
+        switch (selectedFilter) {
+            case 'completed':
+                return todos.filter(todo => todo.completed);
+            case 'incompleted':
+                return todos.filter(todo => !todo.completed);
+            default:
+                return todos;
+        }
+    }
+
+    const filteredTodos = getFilteredTodos ();
+
     return (
         <ListGroup className="w-50">
-            {todoStore.todos.map((todo, index) => (
+            {filteredTodos.map((todo, index) => (
                 <ListGroup.Item key={todo.id}>
                     <Row className="form-row">
                         <Col className="d-flex align-items-center" xs={12} md={true}>
