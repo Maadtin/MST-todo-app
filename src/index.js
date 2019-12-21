@@ -8,6 +8,8 @@ import {Provider} from "mobx-react";
 import stores from "./stores";
 import {onSnapshot} from "mobx-state-tree";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 stores.todoStore.fetchTodos();
 
 ReactDOM.render(

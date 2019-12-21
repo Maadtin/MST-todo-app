@@ -1,4 +1,4 @@
-import {applySnapshot, flow, types} from "mobx-state-tree";
+import {destroy, flow, getParent, types} from "mobx-state-tree";
 import http from "../http";
 
 const Todo = types
@@ -8,19 +8,19 @@ const Todo = types
         editing: types.optional(types.boolean, false),
         completed: false
     })
-    .views(self => ({
-        get status() {
-            return self.completed ? 'Completada' : 'No completada';
-        }
-    }))
     .actions(self => ({
-        update: flow(function* (todo) {
+        update: flow(function* (todo, updateFullObject = false) {
             const response = yield http.put(`/todos/${self.id}`, todo);
-            applySnapshot(self, response.data);
+            Object.keys(response.data).forEach(key => {
+                if (self.hasOwnProperty(key)) {
+                    self[key] = response.data[key];
+                }
+            })
+            // self = {...response.data}
         }),
-        toggle: flow(function* () {
-            yield self.update({completed: !self.completed});
-            self.completed = !self.completed;
+        delete: flow(function* () {
+            yield http.delete(`/todos/${self.id}`);
+            getParent(self, 2).remove(self);
         }),
         toggleEdit() {
             self.editing = !self.editing;
@@ -44,7 +44,10 @@ const TodoStore = types
         fetchTodos: flow(function* () {
             const response = yield http.get('/todos');
             self.todos = response.data;
-        })
+        }),
+        remove(todo) {
+            destroy(todo);
+        }
     }));
 
 

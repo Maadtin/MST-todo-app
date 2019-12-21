@@ -52,12 +52,12 @@ app.put('/todos/:id', async (req, res) => {
     return res.json(todo);
 });
 
-app.delete('/todos:id', async (req, res) => {
-    const deleted = await knex.where('id', req.params.id).delete();
+app.delete('/todos/:id', async (req, res) => {
+    const deleted = await knex.table('todos').where('id', req.params.id).del();
     if (!deleted) {
         return res.status(413).json({message: 'Could not delete todo'})
     }
-    return res.json({messsage: 'Todo deleted succesfully'})
+    return res.status(200).json({messsage: 'Todo deleted succesfully'})
 });
 
 app.listen(5000, () => console.log('Server started on http://localhost:5000'));

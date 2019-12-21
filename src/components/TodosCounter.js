@@ -6,9 +6,9 @@ function TodosCounter(props) {
     console.log('TodosCounter rendered');
     const {todoStore} = useStores();
     return (
-        <h2>
+        <h4 className="font-weight-lighter mb-3">
             Completed todos: {todoStore.completedTodos}
-        </h2>
+        </h4>
     );
 }
 
